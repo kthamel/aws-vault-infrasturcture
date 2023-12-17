@@ -26,4 +26,4 @@ terraform plan
 ## Terraform Apply ##
 cd $MWDIR/demo-vault-eks-infrastructure
 echo "Terraform Applying"
-terraform apply --auto-approve
+terraform destroy --auto-approve
