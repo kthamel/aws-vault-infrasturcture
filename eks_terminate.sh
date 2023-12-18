@@ -1,5 +1,5 @@
 #!/bin/bash 
-echo "Provisioning the AWS Vault Infrastructure"
+echo "Destroying the AWS Vault Infrastructure"
 MWDIR=$(PWD)
 echo $MWDIR
 
