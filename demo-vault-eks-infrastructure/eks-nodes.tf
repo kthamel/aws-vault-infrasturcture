@@ -45,9 +45,9 @@ resource "aws_eks_node_group" "master-nodes" {
   capacity_type  = "ON_DEMAND"
   instance_types = ["t2.micro"]
   scaling_config {
-    desired_size = 2
+    desired_size = 1
     min_size     = 0
-    max_size     = 3
+    max_size     = 2
   }
   update_config {
     max_unavailable = 1
@@ -73,9 +73,9 @@ resource "aws_eks_node_group" "private-nodes" {
   capacity_type  = "ON_DEMAND"
   instance_types = ["t2.micro"]
   scaling_config {
-    desired_size = 2
+    desired_size = 1
     min_size     = 0
-    max_size     = 3
+    max_size     = 2
   }
   update_config {
     max_unavailable = 1
