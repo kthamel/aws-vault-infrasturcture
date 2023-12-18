@@ -31,6 +31,34 @@ resource "aws_iam_role_policy_attachment" "kthamel-eks-cni-iam-role-policy" {
   role       = aws_iam_role.kthamel-eks-nodes-iam-role.name
 }
 
+resource "aws_eks_node_group" "master-nodes" {
+  cluster_name    = aws_eks_cluster.kthamel-eks-cluster.name
+  node_group_name = "controler-nodes"
+  node_role_arn   = aws_iam_role.kthamel-eks-nodes-iam-role.arn
+
+  subnet_ids = [
+    aws_subnet.kthamel-eks-subnet-1.id,
+    aws_subnet.kthamel-eks-subnet-2.id,
+    aws_subnet.kthamel-eks-subnet-3.id
+  ]
+
+  capacity_type  = "ON_DEMAND"
+  instance_types = ["t2.micro"]
+  scaling_config {
+    desired_size = 2
+    min_size     = 0
+    max_size     = 3
+  }
+  update_config {
+    max_unavailable = 1
+  }
+  labels = {
+    node_type = "controlplane"
+  }
+
+  tags = local.common_tags
+}
+
 resource "aws_eks_node_group" "private-nodes" {
   cluster_name    = aws_eks_cluster.kthamel-eks-cluster.name
   node_group_name = "worker-nodes"
@@ -47,7 +75,7 @@ resource "aws_eks_node_group" "private-nodes" {
   scaling_config {
     desired_size = 2
     min_size     = 0
-    max_size     = 2
+    max_size     = 3
   }
   update_config {
     max_unavailable = 1

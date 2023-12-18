@@ -44,7 +44,6 @@ resource "aws_iam_policy" "kthamel-eks-cluster-autoscaller-policy" {
 
 resource "aws_iam_role_policy_attachment" "eks_cluster_autoscaler_attach" {
   role = aws_iam_role.kthamel-eks-cluster-autoscaller-role.name
-  # role       = aws_iam_role.kthamel-eks_cluster_autoscaler-role.role 
   policy_arn = aws_iam_policy.kthamel-eks-cluster-autoscaller-policy.arn
 }
 
