@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: deployment-httpd
+  name: deployment-httpd
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: deployment-httpd
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: deployment-httpd
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node_type
+                operator: In
+                values:
+                - workers
+      containers:
+      - image: httpd:latest
+        name: httpd
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
