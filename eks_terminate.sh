@@ -14,6 +14,6 @@ echo "*********** Terraform Applying ***********"
 terraform destroy --auto-approve
 
 ## Destroy EBS Volume ##
-cd $MWDIR/demo-vault-eks-deployment
+cd $MWDIR/demo-vault-eks-storage-provisioning
 echo "*********** Destroying the EBS Volume ***********"
 terraform destroy --auto-approve
