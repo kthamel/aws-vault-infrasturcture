@@ -1,34 +1,19 @@
 #!/bin/bash 
-echo "Destroying the AWS Vault Infrastructure"
+echo "*********** Destroying the AWS Vault Infrastructure ***********"
 MWDIR=$(PWD)
 echo $MWDIR
 
 ## Terraform Initialization ##
 cd $MWDIR/demo-vault-eks-infrastructure
-echo "Initialize the directory"
+echo "*********** Initialize the directory ***********"
 terraform init
 
-## Terraform Formatting ##
+## Terraform Apply for Destroying ##
 cd $MWDIR/demo-vault-eks-infrastructure
-echo "Canonical Formatting of Codes"
-terraform fmt .
-
-## Terraform Validation ##
-cd $MWDIR/demo-vault-eks-infrastructure
-echo "Validate the Terraform Configurations"
-terraform validate
-
-## Terraform Planning ##
-cd $MWDIR/demo-vault-eks-infrastructure
-echo "Terraform Plan Output"
-terraform plan
-
-## Terraform Apply ##
-cd $MWDIR/demo-vault-eks-infrastructure
-echo "Terraform Applying"
+echo "*********** Terraform Applying ***********"
 terraform destroy --auto-approve
 
 ## Destroy EBS Volume ##
 cd $MWDIR/demo-vault-eks-deployment
-echo "*********** Creating the EBS Volume ***********"
+echo "*********** Destroying the EBS Volume ***********"
 terraform destroy --auto-approve
