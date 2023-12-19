@@ -27,3 +27,8 @@ terraform plan
 cd $MWDIR/demo-vault-eks-infrastructure
 echo "Terraform Applying"
 terraform destroy --auto-approve
+
+## Destroy EBS Volume ##
+cd $MWDIR/demo-vault-eks-deployment
+echo "*********** Creating the EBS Volume ***********"
+terraform destroy --auto-approve

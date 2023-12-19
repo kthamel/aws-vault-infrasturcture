@@ -28,9 +28,31 @@ cd $MWDIR/demo-vault-eks-infrastructure
 echo "*********** Terraform Applying ***********"
 terraform apply --auto-approve
 
-## Create Kubernetes Deployment ##
+## Authenticate to the Kubernetes Cluster ##
 cd $MWDIR/demo-kubernetes-deployment
-echo "*********** Deploying the test service ***********"
+echo "*********** Authenticating to the Kubernetes Cluster ***********"
 aws eks list-clusters
 aws eks update-kubeconfig --region us-east-1 --name kthamel-eks-cluster
-kubectl create -f deployment-httpd.yaml 
+
+## Create EBS Volume ##
+cd $MWDIR/demo-vault-eks-deployment
+echo "*********** Creating the EBS Volume ***********"
+terraform apply --auto-approve
+
+## Create Persistent Volume and Volume Claim ##
+cd $MWDIR/demo-vault-eks-deployment
+echo "*********** Creating the Persistent Volume and the Volume Claim ***********"
+bash script_01.sh
+
+
+##  List Available Persistant Volumes ##
+echo "*********** List the Provisioned Persistant Volumes ***********"
+kubectl get pv
+
+# ## Create Kubernetes Deployment ##
+# cd $MWDIR/demo-kubernetes-deployment
+# echo "*********** Deploying the test service ***********"
+# aws eks list-clusters
+# aws eks update-kubeconfig --region us-east-1 --name kthamel-eks-cluster
+# kubectl create -f deployment-httpd.yaml 
+
