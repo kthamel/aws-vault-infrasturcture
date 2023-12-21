@@ -5,7 +5,7 @@ export Volume_ID=$(aws ec2 describe-volumes --filters "Name=tag:Name,Values=Vaul
 echo "*********** Exported value is: $Volume_ID ***********"
 
 echo "*********** Creating the Persistant Volume ***********"
-kubectl create -f create_pv.yaml
+kubectl create -f tech-01/create_pv.yaml
 
 echo "*********** Creating the Persistant Volume Claim ***********"
-kubectl create -f create_pvc.yaml
+kubectl create -f tech-01/create_pvc.yaml
