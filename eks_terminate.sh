@@ -3,11 +3,6 @@ echo "*********** Destroying the AWS Vault Infrastructure ***********"
 MWDIR=$(PWD)
 echo $MWDIR
 
-## Terraform Initialization ##
-cd $MWDIR/demo-vault-eks-infrastructure
-echo "*********** Initialize the directory ***********"
-terraform init
-
 ## Terraform Apply for Destroying ##
 cd $MWDIR/demo-vault-eks-infrastructure
 echo "*********** Terraform Applying ***********"

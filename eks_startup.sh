@@ -44,7 +44,11 @@ cd $MWDIR/demo-vault-eks-storage-provisioning
 echo "*********** Creating the Persistent Volume and the Volume Claim ***********"
 bash script_01.sh
 
-
-##  List Available Persistant Volumes ##
+## List Available Persistant Volumes ##
 echo "*********** List the Provisioned Persistant Volumes ***********"
-kubectl get pv
+kubectl get pvc
+
+# ## Deploy Vault Helm Chart ##
+# cd $MWDIR/demo-kubernetes-deployment
+# echo "*********** Deploying Hashicorp Vault using Helm Charts ***********"
+# bash script_01.sh
