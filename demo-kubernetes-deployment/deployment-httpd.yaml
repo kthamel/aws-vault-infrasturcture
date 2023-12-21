@@ -32,4 +32,11 @@ spec:
         ports:
         - containerPort: 80
         resources: {}
+        volumeMounts:
+        - mountPath: /vault
+          name: vault-volume
+      volumes:
+      - name: vault-volume
+        persistentVolumeClaim:
+          claimName: vault-volume-claim
 status: {}
