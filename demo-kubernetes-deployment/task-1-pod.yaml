@@ -3,15 +3,15 @@ kind: Pod
 metadata:
   name: task-1
 spec:
-  # affinity:
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #       nodeSelectorTerms:
-  #       - matchExpressions:
-  #         - key: node_type
-  #           operator: In
-  #           values:
-  #           - workers
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node_type
+            operator: In
+            values:
+            - workers
   containers:
     - name: task-pv-container
       image: nginx
