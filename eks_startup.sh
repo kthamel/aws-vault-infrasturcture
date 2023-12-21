@@ -39,10 +39,25 @@ cd $MWDIR/demo-vault-eks-storage-provisioning
 echo "*********** Creating the EBS Volume ***********"
 terraform apply --auto-approve
 
+# ## Creating Storage Class ##
+# cd $MWDIR/demo-vault-eks-storage-provisioning
+# echo "*********** Creating the Persistant Volume ***********"
+# kubectl create -f create-sc.yaml
+
+## Creating the EBS CSI Driver ##
+echo "*********** Creating the EBS CSI Drive Add-on ***********"
+aws eks create-addon --cluster-name kthamel-eks-cluster --addon-name aws-ebs-csi-driver \
+  --service-account-role-arn arn:aws:iam::533629863969:role/AmazonEKS_EBS_CSI_DriverRole
+
 ## Create Persistent Volume and Volume Claim ##
 cd $MWDIR/demo-vault-eks-storage-provisioning
 echo "*********** Creating the Persistent Volume and the Volume Claim ***********"
 bash script_01.sh
+
+## Creating the Persistant Volume ##
+cd $MWDIR/demo-vault-eks-storage-provisioning
+echo "*********** Creating the Persistant Volume Claim ***********"
+kubectl create -f create-pvc.yaml
 
 ## List Available Persistant Volumes ##
 echo "*********** List the Provisioned Persistant Volumes ***********"
