@@ -47,7 +47,7 @@ resource "aws_eks_node_group" "master-nodes" {
   scaling_config {
     desired_size = 3
     min_size     = 0
-    max_size     = 4
+    max_size     = 3
   }
   update_config {
     max_unavailable = 1
@@ -75,7 +75,7 @@ resource "aws_eks_node_group" "private-nodes" {
   scaling_config {
     desired_size = 3
     min_size     = 0
-    max_size     = 4
+    max_size     = 3
   }
   update_config {
     max_unavailable = 1
