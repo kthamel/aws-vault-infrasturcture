@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: task-x
+  name: mypod
 spec:
   affinity:
     nodeAffinity:
@@ -12,16 +12,13 @@ spec:
             operator: In
             values:
             - us-east-1c
+  containers:
+    - name: myfrontend
+      image: nginx
+      volumeMounts:
+      - mountPath: "/var/www/html"
+        name: vault-pv
   volumes:
     - name: vault-pv
       persistentVolumeClaim:
         claimName: vault-volume-claim
-  containers:
-    - name: task-pv-container
-      image: nginx
-      ports:
-        - containerPort: 80
-          name: "http-server"
-      volumeMounts:
-        - name: vault-pv
-          mountPath: "/var/log/"

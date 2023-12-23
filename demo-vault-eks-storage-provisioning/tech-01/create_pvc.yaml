@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: vault-volume-claim
 spec:
-  storageClassName: vault-gp3
+  storageClassName: gp2
   volumeName: vault-pv
   accessModes:
     - ReadWriteOnce

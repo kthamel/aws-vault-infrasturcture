@@ -11,7 +11,7 @@ kind: PersistentVolume
 metadata:
   name: vault-pv
 spec:
-  storageClassName: vault-gp3
+  storageClassName: gp2
   accessModes:
   - ReadWriteOnce
   capacity:
@@ -27,8 +27,6 @@ spec:
             - key: topology.ebs.csi.aws.com/zone
               operator: In
               values:
-                - us-east-1a
-                - us-east-1b
                 - us-east-1c
 EOF
 
