@@ -36,7 +36,7 @@ echo "*********** Creating the Persistant Volume ***********"
 kubectl create -f tech-01/create_pv.yaml
 
 echo "*********** Creating the Persistant Volume Claim ***********"
-kubectl create -f create_pvc.yaml
+kubectl create -f tech-01/create_pvc.yaml
 
 echo "*********** Delete the YAML PV Creation File  ***********"
 rm -rf tech-01/create_pv.yaml

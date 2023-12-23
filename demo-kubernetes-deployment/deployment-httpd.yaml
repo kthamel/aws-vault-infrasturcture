@@ -34,9 +34,9 @@ spec:
         resources: {}
         volumeMounts:
         - mountPath: /vault
-          name: vault-volume
+          name: vault-pv
       volumes:
-      - name: vault-volume
+      - name: vault-pv
         persistentVolumeClaim:
           claimName: vault-volume-claim
 status: {}
