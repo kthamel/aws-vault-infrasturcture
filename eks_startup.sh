@@ -49,6 +49,11 @@ echo "*********** Creating the EBS CSI Drive Add-on ***********"
 aws eks create-addon --cluster-name kthamel-eks-cluster --addon-name aws-ebs-csi-driver \
   --service-account-role-arn arn:aws:iam::533629863969:role/AmazonEKS_EBS_CSI_DriverRole
 
+## Annotating the EBS CSI Driver ##
+kubectl annotate serviceaccount ebs-csi-controller-sa \
+    -n kube-system \
+    eks.amazonaws.com/role-arn=arn:aws:iam::533629863969:role/AmazonEKS_EBS_CSI_DriverRole
+
 ## Create Persistent Volume and Volume Claim ##
 cd $MWDIR/demo-vault-eks-storage-provisioning
 echo "*********** Creating the Persistent Volume and the Volume Claim ***********"

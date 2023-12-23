@@ -1,5 +1,5 @@
 resource "aws_ebs_volume" "vault-storage" {
-  availability_zone = "us-east-1a"
+  availability_zone = "us-east-1c"
   size              = 10
   type              = "gp3"
 

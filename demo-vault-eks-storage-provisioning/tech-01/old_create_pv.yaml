@@ -19,6 +19,4 @@ spec:
             - key: topology.ebs.csi.aws.com/zone
               operator: In
               values:
-                - us-east-1a
-                - us-east-1b
                 - us-east-1c
