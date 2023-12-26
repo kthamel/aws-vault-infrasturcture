@@ -6,7 +6,10 @@ resource "aws_iam_role" "kthamel-eks-nodes-iam-role" {
       {
         "Effect" : "Allow",
         "Principal" : {
-          "Service" : "ec2.amazonaws.com"
+          "Service" : [
+            "eks.amazonaws.com",
+            "ec2.amazonaws.com"
+          ]
         },
         "Action" : "sts:AssumeRole"
       }
@@ -71,9 +74,9 @@ resource "aws_eks_node_group" "private-nodes" {
   ]
 
   capacity_type  = "ON_DEMAND"
-  instance_types = ["t2.micro"]
+  instance_types = ["t2.medium"]
   scaling_config {
-    desired_size = 3
+    desired_size = 1
     min_size     = 0
     max_size     = 3
   }

@@ -11,7 +11,8 @@ resource "aws_iam_role" "kthamel-eks-cluster-iam-role" {
             "Effect": "Allow",
             "Principal": {
                 "Service": [
-                    "eks.amazonaws.com"
+                    "eks.amazonaws.com",
+                    "ec2.amazonaws.com"
                 ]
             }
         }

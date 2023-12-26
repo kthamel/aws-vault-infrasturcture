@@ -50,6 +50,8 @@ aws eks create-addon --cluster-name kthamel-eks-cluster --addon-name aws-ebs-csi
   --service-account-role-arn arn:aws:iam::533629863969:role/AmazonEKS_EBS_CSI_DriverRole
 
 ## Annotating the EBS CSI Driver ##
+echo "*********** Annotate the Service Account ***********"
+sleep 60
 kubectl annotate serviceaccount ebs-csi-controller-sa \
     -n kube-system \
     eks.amazonaws.com/role-arn=arn:aws:iam::533629863969:role/AmazonEKS_EBS_CSI_DriverRole
@@ -59,14 +61,14 @@ cd $MWDIR/demo-vault-eks-storage-provisioning
 echo "*********** Creating the Persistent Volume and the Volume Claim ***********"
 bash script_01.sh
 
-## Creating the Persistant Volume ##
-cd $MWDIR/demo-vault-eks-storage-provisioning
-echo "*********** Creating the Persistant Volume Claim ***********"
-kubectl create -f create-pvc.yaml
-
 ## List Available Persistant Volumes ##
 echo "*********** List the Provisioned Persistant Volumes ***********"
+sleep 20
 kubectl get pvc
+
+## List Available Persistant Volumes ##
+echo "*********** Redeploy the ebs-csi-controller-sa Pods ***********"
+kubectl rollout restart deployment ebs-csi-controller --namespace=kube-system
 
 # ## Deploy Vault Helm Chart ##
 # cd $MWDIR/demo-kubernetes-deployment
