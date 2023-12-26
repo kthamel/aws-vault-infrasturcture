@@ -9,6 +9,18 @@ data "aws_iam_policy_document" "kthamel-eks-iam-oidc-policy" {
       values   = ["system:serviceaccount:default:kthamel-eks-oidc-role"]
     }
 
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.kthamel-eks-openid.url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.kthamel-eks-openid.url, "https://", "")}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
     principals {
       identifiers = [aws_iam_openid_connect_provider.kthamel-eks-openid.arn]
       type        = "Federated"
