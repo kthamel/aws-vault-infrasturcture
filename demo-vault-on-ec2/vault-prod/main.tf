@@ -21,7 +21,6 @@ resource "aws_instance" "ssh-instance" {
   subnet_id       = aws_subnet.kthamel-ec2-subnet-0.id
   security_groups = [aws_security_group.public-subnet-assoc.id]
   instance_type   = "t2.micro"
-  hibernation = false
   key_name        = aws_key_pair.ssh_key_pub.key_name
   connection {
     user        = "ec2-user"
@@ -57,7 +56,6 @@ resource "aws_instance" "vault-instance" {
   subnet_id       = aws_subnet.kthamel-ec2-subnet-1.id
   security_groups = [aws_security_group.private-subnet-assoc.id]
   instance_type   = "t2.micro"
-  hibernation = false
   key_name        = aws_key_pair.ssh_key_pub.key_name
   depends_on      = [aws_ebs_volume.vault-storage-backend]
 
@@ -65,20 +63,11 @@ resource "aws_instance" "vault-instance" {
 #!/bin/bash
 ## Install dependencies ##
 sudo yum install git -y
-## Install HashiCorp Vault ##
-sudo wget -O /mnt/vault-file.zip https://releases.hashicorp.com/vault/1.15.4/vault_1.15.4_linux_amd64.zip
-sudo cd /mnt
-sudo unzip /mnt/vault-file.zip
-sudo mv vault /usr/local/bin/
-
-## Attach the volume ##
-sudo mkfs.ext4 -F /dev/xvdk
-sudo mount /dev/xvdk /mnt
-sudo mkdir /mnt/vault-data
-
-## Copy the vault systemd file##
-sudo cd /mnt
+## Clone the vault configurations ##
 sudo git clone https://github.com/kthamel/aws-vault-hcl-configuration.git
+## Setup vault prod server ## 
+sudo bash aws-vault-hcl-configuration/script.sh
+
 EOF
 
   connection {
