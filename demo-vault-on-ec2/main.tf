@@ -8,7 +8,7 @@ resource "local_file" "private_key_pem" {
 }
 
 resource "aws_key_pair" "ssh_key_pub" {
-  key_name   = "ec2_ssh_key"
+  key_name   = "ec2_ssh_key-${random_string.secret-string.id}"
   public_key = tls_private_key.ssh_key.public_key_openssh
 
   lifecycle {
@@ -24,15 +24,6 @@ resource "random_string" "secret-string" {
   special = false
 }
 
-resource "aws_secretsmanager_secret" "ec2-private-key" {
-  name = random_string.secret-string.id
-}
-
-resource "aws_secretsmanager_secret_version" "password" {
-  secret_id     = aws_secretsmanager_secret.ec2-private-key.id
-  secret_string = tls_private_key.ssh_key.private_key_pem
-}
-
 resource "aws_instance" "ssh-instance" {
   ami             = "ami-079db87dc4c10ac91"
   subnet_id       = aws_subnet.kthamel-ec2-subnet-0.id
@@ -43,6 +34,15 @@ resource "aws_instance" "ssh-instance" {
     user        = "ec2-user"
     private_key = tls_private_key.ssh_key.private_key_pem
     host        = self.public_ip
+  }
+
+  provisioner "local-exec" {
+    command = "chmod 0400 ${local_file.private_key_pem.filename}"
+  }
+
+  provisioner "file" {
+    source      = "ec2_ssh_key.pem"
+    destination = "/home/ec2-user/ec2_ssh_key.pem"
   }
 
   tags = local.common_tags
@@ -67,4 +67,9 @@ EOF
   }
 
   tags = local.common_tags
+}
+
+output "ssh-instance-eip" {
+  description = "Public IP of SSH Instance"
+  value       = aws_instance.ssh-instance.public_ip
 }
