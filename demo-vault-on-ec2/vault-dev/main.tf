@@ -8,20 +8,12 @@ resource "local_file" "private_key_pem" {
 }
 
 resource "aws_key_pair" "ssh_key_pub" {
-  key_name   = "ec2_ssh_key-${random_string.secret-string.id}"
+  key_name   = "ec2_ssh_key"
   public_key = tls_private_key.ssh_key.public_key_openssh
 
   lifecycle {
     ignore_changes = [key_name]
   }
-}
-
-resource "random_string" "secret-string" {
-  length  = 5
-  numeric = true
-  lower   = true
-  upper   = false
-  special = false
 }
 
 resource "aws_instance" "ssh-instance" {
@@ -54,11 +46,13 @@ resource "aws_instance" "vault-instance" {
   security_groups = [aws_security_group.private-subnet-assoc.id]
   instance_type   = "t2.micro"
   key_name        = aws_key_pair.ssh_key_pub.key_name
-  user_data       = <<-EOF
+
+  user_data = <<-EOF
 #!/bin/bash
+## Install HashiCorp Vault ##
 sudo yum install -y yum-utils shadow-utils
 sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-sudo yum -y install vault  
+sudo yum -y install vault
 EOF
   connection {
     user        = "ec2-user"
@@ -72,4 +66,9 @@ EOF
 output "ssh-instance-eip" {
   description = "Public IP of SSH Instance"
   value       = aws_instance.ssh-instance.public_ip
+}
+
+output "vault-instance-ip" {
+  description = "Private IP of Vault Instance"
+  value       = aws_instance.vault-instance.private_ip
 }
