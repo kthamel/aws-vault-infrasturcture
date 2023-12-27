@@ -1,4 +1,4 @@
-# aws-vault-infrasturcture
+# Dev Vault #
 
 1. Check the running Vault version
 vault --version
@@ -19,4 +19,7 @@ vault kv put secret/kthamel/aws user=kthamel-a
 6. Retrieve the value of a secret from CLI
 vault kv get secret/kthamel/aws
 
-7. 
+# Prod Vault #
+
+1. Start prod vault
+sudo systemctl start vault
