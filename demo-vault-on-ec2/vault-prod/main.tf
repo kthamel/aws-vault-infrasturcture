@@ -67,6 +67,7 @@ sudo yum install git -y
 sudo git clone https://github.com/kthamel/aws-vault-hcl-configuration.git
 ## Setup vault prod server ## 
 sudo bash aws-vault-hcl-configuration/script.sh
+sudo chown -Rv vault:vault /mntvault-data/
 
 EOF
 
