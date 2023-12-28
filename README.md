@@ -23,3 +23,16 @@ vault kv get secret/kthamel/aws
 
 1. Start prod vault
 sudo systemctl start vault
+
+2. See the logs under vault
+sudo journalctl -u vault
+
+3. Initialize the vault
+export VAULT_ADDR='http://127.0.0.1:8200'
+vault operator init
+
+4. Unseal the vault
+vault operator unseal
+
+5. Log into vault
+vault login
