@@ -16,34 +16,34 @@ resource "aws_key_pair" "ssh_key_pub" {
   }
 }
 
-resource "aws_instance" "ssh-instance" {
-  ami             = "ami-079db87dc4c10ac91"
-  subnet_id       = aws_subnet.kthamel-ec2-subnet-0.id
-  security_groups = [aws_security_group.public-subnet-assoc.id]
-  instance_type   = "t2.micro"
-  key_name        = aws_key_pair.ssh_key_pub.key_name
-  connection {
-    user        = "ec2-user"
-    private_key = tls_private_key.ssh_key.private_key_pem
-    host        = self.public_ip
-  }
+# resource "aws_instance" "ssh-instance" {
+#   ami             = "ami-079db87dc4c10ac91"
+#   subnet_id       = aws_subnet.kthamel-ec2-subnet-0.id
+#   security_groups = [aws_security_group.public-subnet-assoc.id]
+#   instance_type   = "t2.micro"
+#   key_name        = aws_key_pair.ssh_key_pub.key_name
+#   connection {
+#     user        = "ec2-user"
+#     private_key = tls_private_key.ssh_key.private_key_pem
+#     host        = self.public_ip
+#   }
 
-  provisioner "local-exec" {
-    command = "chmod 0400 ${local_file.private_key_pem.filename}"
-  }
+#   provisioner "local-exec" {
+#     command = "chmod 0400 ${local_file.private_key_pem.filename}"
+#   }
 
-  provisioner "file" {
-    source      = "ec2_ssh_key.pem"
-    destination = "/home/ec2-user/ec2_ssh_key.pem"
-  }
+#   provisioner "file" {
+#     source      = "ec2_ssh_key.pem"
+#     destination = "/home/ec2-user/ec2_ssh_key.pem"
+#   }
 
-  tags = local.common_tags
-}
+#   tags = local.common_tags
+# }
 
 resource "aws_network_interface" "vault-instance-nic" {
-  subnet_id       = aws_subnet.kthamel-ec2-subnet-1.id
-  private_ips     = ["172.32.1.100"]
-  security_groups = [aws_security_group.private-subnet-assoc.id]
+  subnet_id       = aws_subnet.kthamel-ec2-subnet-0.id
+  private_ips     = ["172.32.0.100"]
+  security_groups = [aws_security_group.public-subnet-assoc.id]
 
   attachment {
     instance     = aws_instance.vault-instance.id
@@ -53,8 +53,8 @@ resource "aws_network_interface" "vault-instance-nic" {
 
 resource "aws_instance" "vault-instance" {
   ami             = "ami-079db87dc4c10ac91"
-  subnet_id       = aws_subnet.kthamel-ec2-subnet-1.id
-  security_groups = [aws_security_group.private-subnet-assoc.id]
+  subnet_id       = aws_subnet.kthamel-ec2-subnet-0.id
+  security_groups = [aws_security_group.public-subnet-assoc.id]
   instance_type   = "t2.micro"
   key_name        = aws_key_pair.ssh_key_pub.key_name
   depends_on      = [aws_ebs_volume.vault-storage-backend]
@@ -73,7 +73,11 @@ EOF
   connection {
     user        = "ec2-user"
     private_key = tls_private_key.ssh_key.private_key_pem
-    host        = self.private_ip
+    host        = self.public_ip
+  }
+
+  provisioner "local-exec" {
+    command = "chmod 0400 ${local_file.private_key_pem.filename}"
   }
 
   tags = local.common_tags
@@ -94,6 +98,6 @@ resource "aws_volume_attachment" "vault-storage-backend" {
 }
 
 output "ssh-instance-eip" {
-  description = "Public IP of SSH Instance"
-  value       = aws_instance.ssh-instance.public_ip
+  description = "Public IP of Vault Instance"
+  value       = aws_instance.vault-instance.public_ip
 }
