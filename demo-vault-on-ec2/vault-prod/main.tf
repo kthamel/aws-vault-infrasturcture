@@ -16,30 +16,6 @@ resource "aws_key_pair" "ssh_key_pub" {
   }
 }
 
-# resource "aws_instance" "ssh-instance" {
-#   ami             = "ami-079db87dc4c10ac91"
-#   subnet_id       = aws_subnet.kthamel-ec2-subnet-0.id
-#   security_groups = [aws_security_group.public-subnet-assoc.id]
-#   instance_type   = "t2.micro"
-#   key_name        = aws_key_pair.ssh_key_pub.key_name
-#   connection {
-#     user        = "ec2-user"
-#     private_key = tls_private_key.ssh_key.private_key_pem
-#     host        = self.public_ip
-#   }
-
-#   provisioner "local-exec" {
-#     command = "chmod 0400 ${local_file.private_key_pem.filename}"
-#   }
-
-#   provisioner "file" {
-#     source      = "ec2_ssh_key.pem"
-#     destination = "/home/ec2-user/ec2_ssh_key.pem"
-#   }
-
-#   tags = local.common_tags
-# }
-
 resource "aws_network_interface" "vault-instance-nic" {
   subnet_id       = aws_subnet.kthamel-ec2-subnet-0.id
   private_ips     = ["172.32.0.100"]
