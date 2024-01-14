@@ -43,9 +43,8 @@ vault secrets enable -path=aws kv <-In here kv means auth method
 7. Remove the newly added path 
 vault secrets disable aws/
 
-8. Add secrets into the newly added path
-vault kv put aws/administrator/user user=administrator
-vault kv put aws/administrator/password password=abc123
+8. Add secrets for new vault user
+vault write auth/userpass/users/kthamel-a password=asitlk8s policies=root
 
 9. Preview the added secrets 
 vault kv get aws/administrator/user
@@ -70,3 +69,7 @@ vault auth tune -description="aws credentials" aws-data/
 
 15. Enable bash completion for vautl
 vault -autocomplete-install && source $HOME/.bashrc
+
+16. List the vault policies list 
+vault policy list
+
